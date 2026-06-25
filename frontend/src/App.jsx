@@ -10,6 +10,8 @@ import TasksPage from './pages/TasksPage';
 import EmployeesPage from './pages/EmployeesPage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 
+import SignupPage from './pages/SignupPage';
+
 function App() {
   const { isAuthenticated, user, loading } = useAuth();
 
@@ -27,6 +29,7 @@ function App() {
       <main className="flex-grow">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
           {/* Redirect authenticated users from root to their dashboard */}

@@ -35,6 +35,23 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
+  const register = async (email, password, first_name, last_name, role) => {
+    try {
+      const response = await axiosInstance.post('/auth/register', { email, password, first_name, last_name, role });
+      const { accessToken, user } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      setIsAuthenticated(true);
+      setUser(user);
+      if (user.role === 'Manager') navigate('/manager/dashboard');
+      else if (user.role === 'Employee') navigate('/employee/dashboard');
+      else navigate('/');
+      return true;
+    } catch (error) {
+      console.error('Registration failed:', error);
+      throw error;
+    }
+  };
+
   const login = async (email, password) => {
     try {
       const response = await axiosInstance.post('/auth/login', { email, password });
@@ -81,7 +98,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, loading, login, logout, hasRole }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, loading, register, login, logout, hasRole }}>
       {children}
     </AuthContext.Provider>
   );
